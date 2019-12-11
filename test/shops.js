@@ -1,45 +1,44 @@
-var expect = require('expect.js');
+import { expect } from 'chai';
 
-var shops = require('../app/shops');
+import shops from '../app/shops.js';
 
-describe('Shops module', function(){
-	var shop = {
-			name: "Test shop",
-			address: "Test address"
-		},
-		shopId;
+describe('Shops module', () => {
+  const shop = {
+    name: 'Test shop',
+    address: 'Test address',
+  };
+  let shopId;
 
-	it('should get all shops from db', function(done){
-		shops.read().then(function(data){
-			expect(data).to.be.a('array');
-			expect(data.length).to.be.above(0);
-			shopId = data[0]._id;
-			done();
-		}, function(e){
-			expect(e).to.be(null);
-			done();
-		});
-	});
+  it('should get all shops from db', (done) => {
+    shops.read().then((data) => {
+      expect(data).to.be.an('array');
+      expect(data.length).to.be.above(0);
+      shopId = data[0]._id;
+      done();
+    }, (e) => {
+      expect(e).to.be.null;
+      done();
+    });
+  });
 
-	it('should create a shop', function(done){
+  it('should create a shop', (done) => {
+    shops.create(shop).then((data) => {
+      expect(data).to.be.an('object');
+      expect(data.name).to.equal(shop.name);
+      done();
+    }, (e) => {
+      expect(e).to.be.null;
+      done();
+    });
+  });
 
-		shops.create(shop).then(function(data){
-			expect(data).to.be.a('object');
-			expect(data.name).to.be(shop.name);
-			done();
-		}, function(e){
-			expect(e).to.be(null);
-			done();
-		})
-	});
-
-	it('should get a shop by id', function(done){
-		shops.read(shopId).then(function(data){
-			expect(data).to.be.a('object');
-			done();
-		}, function(e){
-			expect(e).to.be(null);
-			done();
-		});
-	});
+  it('should get a shop by id', (done) => {
+    shops.read(shopId).then((data) => {
+      expect(data).to.be.an('object');
+      done();
+    }, (e) => {
+      expect(e).to.be.null;
+      done();
+    });
+  });
 });

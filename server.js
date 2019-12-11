@@ -1,66 +1,49 @@
-var port = process.env.PORT || 8080;
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+import shops from './app/shops.js';
 
-var app = express();
+const port = process.env.PORT || 8080;
+const app = express();
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-var shops = require('./app/shops');
-
-app.get('/', function(req, res, next) {
-  res.send("Nothing to see here, move along.");
-});
+app.get('/', (req, res) => res.send('Nothing to see here, move along.'));
 
 app.route('/shops')
-  .get(function(req, res, next){
-    shops.read().then(function(data){
-      res.json(data);
-    }, function(err){
-      res.send(err);
-    });
-  })
-  .post(function(req, res, next){
-    shops.create(req.body).then(function(data){
-      res.json(data);
-    }, function(err){
-      res.send(err);
-    });
-  });
+  .get((req, res) => shops.read().then(
+    (data) => res.json(data),
+    (err) => res.send(err),
+  ))
+  .post((req, res) => shops.create(req.body).then(
+    (data) => res.json(data),
+    (err) => res.send(err),
+  ));
 
 app.route('/shops/:shopId')
-  .get(function(req, res, next){
-    shops.read(req.params.shopId).then(function(data){
-      if (data){
-        res.json(data);
-      } else {
-        res.status(404).send(new Error("Shop not found"));
-      }
-    }, function(err){
-      res.status(404).send(new Error("Shop not found"));
-    });
+  .get((req, res) => {
+    shops.read(req.params.shopId).then(
+      (data) => {
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).send(new Error('Shop not found'));
+        }
+      },
+      () => res.status(404).send(new Error('Shop not found')),
+    );
   })
-  .put(function(req, res, next){
-    shops.update(req.params.shopId, req.body).then(function(data){
-      res.json(data);
-    }, function(err){
-      res.send(err);
-    })
-  })
-  .delete(function(req, res, next){
-    shops.remove(req.params.shopId).then(function(){
-      res.status(200).send();
-    }, function(err){
-      res.send(err);
-    });
-  });
+  .put((req, res) => shops.update(req.params.shopId, req.body).then(
+    (data) => res.json(data),
+    (err) => res.send(err),
+  ))
+  .delete((req, res) => shops.remove(req.params.shopId).then(
+    () => res.status(200).send(),
+    (err) => res.send(err),
+  ));
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error:'));
-db.once('open', function (callback) {
-  app.listen(port, function() {
-    console.log('Express server listening on port %s', port);
-  });
-});
+db.once('open', () => app.listen(port, () => console.log('Express server listening on port %s', port)));
