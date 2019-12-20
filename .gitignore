@@ -9,6 +9,10 @@ node_modules
 logs
 *.log
 
+# Db
+
+data
+
 # Runtime data
 pids
 *.pid

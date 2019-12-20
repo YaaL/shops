@@ -4,8 +4,8 @@
 
 Clone repository, start local MongoDB, then:
 
-	npm install
-	npm start
+	npm run install
+	npm run start
 
 By default runs on http://localhost:8080.
 Available endpoints:
@@ -20,4 +20,4 @@ Available endpoints:
 
 Tests are in `/test`, use Mocha + expect.js. Run:
 
-	npm test
+	npm run test

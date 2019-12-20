@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import shops from '../app/shops.js';
+import shops from '../app/controllers/shops.js';
 
 describe('Shops module', () => {
   const shop = {

@@ -21,12 +21,24 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "mocha": "6.2.2",
+    "nodemon": "^2.0.2",
     "superagent": "5.1.2"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "data/*"
+    ],
+    "delay": "2500"
+  },
   "scripts": {
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node --inspect=0.0.0.0 server.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "start": "node --experimental-modules --es-module-specifier-resolution=node server.js",
-    "test": "mocha --require @babel/register --recursive --exit"
+    "test": "mocha --require @babel/register --recursive --exit",
+    "dev-setup": "docker volume create nodemodules",
+    "dev-install": "docker-compose -f docker-compose.builder.yml run --rm install",
+    "dev-start": "docker-compose up -d",
+    "dev-stop": "docker-compose down"
   },
   "type": "module"
 }
