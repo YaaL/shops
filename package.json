@@ -3,7 +3,7 @@
   "description": "REST API example",
   "main": "server.js",
   "dependencies": {
-    "express": "~4.17.1",
+    "express": "~4.17.3",
     "mongoose": "~5.8.0",
     "body-parser": "^1.13.2"
   },
